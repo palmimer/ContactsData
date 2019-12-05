@@ -2,13 +2,13 @@
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="ContactsData.jnlp">
   <information>
     <title>ContactsData</title>
-    <vendor>szilmai</vendor>
+    <vendor>Pálmai Mercédesz</vendor>
     <description>null</description>
     <offline-allowed/>
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ContactsData.jar" size="32445" download="eager" />
+    <jar href="ContactsData.jar" size="34836" download="eager" />
     <jar href="lib\derby.jar" size="3232770" download="eager" />
     <jar href="lib\derbyclient.jar" size="588394" download="eager" />
     <jar href="lib\derbynet.jar" size="272626" download="eager" />

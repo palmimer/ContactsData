@@ -37,7 +37,7 @@ public class PDFGeneration {
             PdfWriter.getInstance(document, new FileOutputStream(fileName + ".pdf"));
             document.open();
             
-            //első elem pl. céges logo
+            //2. első elem hozzáadása pl. céges logo
             //az itextpdf-ből importált Image osztály-ba!!! beletesszük a kép file-unkat
             Image image1 = Image.getInstance(getClass().getResource("/lake_and_house.jpg"));
             //átméretezés
@@ -47,24 +47,28 @@ public class PDFGeneration {
             //hozzáadjuk a dok-hoz
             document.add(image1);
             
-            //hozzáadhatunk egy bekezdést: benne üres sorok + esetleg egy szöveg, betűtípus
+            //3. hozzáadhatunk egy bekezdést: benne üres sorok + esetleg egy szöveg, betűtípus
             document.add(new Paragraph("\n\n\n\n", FontFactory.getFont("betutipus", BaseFont.IDENTITY_H, BaseFont.EMBEDDED)));
             
-            //Táblázat
+            //4. Táblázat az adatokkal
             
             float[] columnWidths = {3, 3, 5, 3}; //relatív oszlopszélességek megadása tömbben
             // táblázat létrehozása a megadott oszlopszélességekkel
             PdfPTable table = new PdfPTable(columnWidths);
             table.setWidthPercentage(100); //100% széles legyen, töltse ki a teret
-            // fejléc
+            
+            // egy címsor a tetejére
             PdfPCell cell = new PdfPCell(new Phrase("Kontakt adatok"));
             cell.setBackgroundColor(GrayColor.GRAYWHITE);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setColspan(4); // hány oszlop széles legyen (mind a négy oszlop felett terjedjen ki
+            cell.setColspan(4); // hány oszlop széles legyen (mind a négy oszlop felett terjedjen ki)
             table.addCell(cell);
             document.add(table);
             
-            //ide jön a táblázat                                                   
+            // táblázat első sora a fejléc
+            table.getDefaultCell().setBackgroundColor(new GrayColor(0.75f));
+            
+            // itt jönnek az adatok
             
             // hozzáadunk egy darab valamit (aláírást)
             Chunk postScript = new Chunk("\n\n\n A ContactsData alkalmazás által létrehozva");

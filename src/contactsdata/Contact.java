@@ -12,7 +12,7 @@ import javafx.beans.property.SimpleStringProperty;
  * @author szilmai
  */
 public class Contact {
-    //az ilyen típusú változók tudnak majd kommunikálni az asatbázissal
+    //az ilyen típusú változók tudnak majd kommunikálni az adatbázissal
     private final SimpleStringProperty lastName;
     private final SimpleStringProperty firstName;
     private final SimpleStringProperty email;
