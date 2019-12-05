@@ -2,6 +2,7 @@
 package contactsdata;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -61,10 +62,11 @@ public class ContactsViewController implements Initializable {
     private final String MENU_EXIT = "Kilépés";
     
     //ez fogja az adatbázisból tartalmazni az adatokat
+    //az FX Collections observableArr.List-je egy statikus függvény, amibe átadjuk a Contact objektumokat
     private final ObservableList<Contact> contactsData = FXCollections.observableArrayList(
-        new Contact("Pityi","Palkó","pityipalko@piko.com","+36 20 4558820"),
-            new Contact("Buksi","Kutya","buksi@dog.com","+36 30 3588870"),
-            new Contact("Pöttyös","Katica","potyikati@potty.com","+36 70 5664221"));
+        new Contact("Pityi","Palkó","pityipalko@piko.com","+36 20 4558820", new Timestamp(System.currentTimeMillis())),
+            new Contact("Buksi","Kutya","buksi@dog.com","+36 30 3588870", new Timestamp(System.currentTimeMillis())),
+            new Contact("Pöttyös","Katica","potyikati@potty.com","+36 70 5664221", new Timestamp(System.currentTimeMillis())));
     
     //ez állítja elő a táblázatot, és teszi bele az adatokat
     public void setTableData(){
@@ -225,7 +227,7 @@ public class ContactsViewController implements Initializable {
         String phoneNum = inputPhoneNumber.getText();
         if(email.length() > 4 && email.contains("@") && email.contains(".") && !lName.equals("") && !fName.equals("") ){
             //hozzáadjuk a listához az új adatot
-            contactsData.add(new Contact(lName, fName, email, phoneNum));
+            contactsData.add(new Contact(lName, fName, email, phoneNum, new Timestamp(System.currentTimeMillis())));
             //kitöröljük a beviteli mezőt
             inputLastName.clear();
             inputFirstName.clear();
@@ -236,15 +238,17 @@ public class ContactsViewController implements Initializable {
     
     @FXML
     private void generatePdf(ActionEvent event){
+        //a beviteli mezőből kivesszük a szöveget
         String fileName = inputExport.getText();
-        //átalakítom a beírt szöveget üres mezők nélkülire
+        //átalakítom a beírt szöveget üres mezők nélkülire (minden whitespace-t átír üres karakterre)
         fileName = fileName.replaceAll("\\s+", "");
-        //ha a beírt filenév nem üres, vagy null
         if (!fileName.equals("") || fileName != null) {
-            //akkor a filenévvel és az adatokból hozza létre a PDF file-t
+            //példányosítjuk a PDFGeneration osztályt
             PDFGeneration pdfCreator = new PDFGeneration();
+            //meghívjuk a metódusát, átadva neki a file-nevet és az adatokat
             pdfCreator.generatePDF(fileName, contactsData);
         }
+        //TODO sikeres lefutás esetén jó lenne egy visszaigazoló üzenet, hogy a pdf file létrejött
     }
     
     //amikor a program először lefut, ennek a törzsében szereplő minden utasítás fusson le

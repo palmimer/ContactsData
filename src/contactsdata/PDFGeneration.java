@@ -39,36 +39,64 @@ public class PDFGeneration {
             
             //2. első elem hozzáadása pl. céges logo
             //az itextpdf-ből importált Image osztály-ba!!! beletesszük a kép file-unkat
-            Image image1 = Image.getInstance(getClass().getResource("/lake_and_house.jpg"));
+            Image image1 = null;
+            try{
+                image1 = Image.getInstance(getClass().getResource("/lake_and_house.jpg"));
+            } catch (Exception ex){
+                System.out.println("Valami baj van a kép file-lal!");
+                System.out.println(ex);
+            }
+            
             //átméretezés
             image1.scaleToFit(200, 150);
             //beállítjuk a helyét
-            image1.setAbsolutePosition(150f, 750f);
+            image1.setAbsolutePosition(250f, 750f);
             //hozzáadjuk a dok-hoz
             document.add(image1);
             
             //3. hozzáadhatunk egy bekezdést: benne üres sorok + esetleg egy szöveg, betűtípus
             document.add(new Paragraph("\n\n\n\n", FontFactory.getFont("betutipus", BaseFont.IDENTITY_H, BaseFont.EMBEDDED)));
             
-            //4. Táblázat az adatokkal
+            //T Á B L Á Z A T   Ö S S Z E Á L L Í T Á S A
             
-            float[] columnWidths = {3, 3, 5, 3}; //relatív oszlopszélességek megadása tömbben
+            float[] columnWidths = {2, 3, 3, 5, 3}; //relatív oszlopszélességek megadása tömbben
             // táblázat létrehozása a megadott oszlopszélességekkel
             PdfPTable table = new PdfPTable(columnWidths);
             table.setWidthPercentage(100); //100% széles legyen, töltse ki a teret
             
-            // egy címsor a tetejére
+            // címsor elkészítése
             PdfPCell cell = new PdfPCell(new Phrase("Kontakt adatok"));
             cell.setBackgroundColor(GrayColor.GRAYWHITE);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setColspan(4); // hány oszlop széles legyen (mind a négy oszlop felett terjedjen ki)
+            cell.setColspan(5); // hány oszlop széles legyen (mind az öt oszlop felett terjedjen ki)
             table.addCell(cell);
-            document.add(table);
             
-            // táblázat első sora a fejléc
+            // a fejléc elkészítése
             table.getDefaultCell().setBackgroundColor(new GrayColor(0.75f));
+            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell("Azonosító");
+            table.addCell("Vezetéknév");
+            table.addCell("Keresztnév");
+            table.addCell("E-mail cím");
+            table.addCell("Telefonszám");
+            //beállítjuk hány fejlécsor legyen
+            table.setHeaderRows(1);
             
-            // itt jönnek az adatok
+            // a táblázat törzsének elkészítése
+            // innentől beállítom, hogy a hozzáadandó cellák (az adatokkal) milyenek legyenek
+            table.getDefaultCell().setBackgroundColor(GrayColor.GRAYWHITE);
+            // kell egy ciklus, ami a sorok cellaadatait rakja össze, annyiszor, ahány adatsor van
+            for (int i = 0; i < data.size(); i++) {
+                int id = i + 1;
+                table.addCell("" + id);
+                table.addCell(data.get(i).getLastName());
+                table.addCell(data.get(i).getFirstName());
+                table.addCell(data.get(i).getEmail());
+                table.addCell(data.get(i).getPhoneNum());
+            }
+            
+            // a táblázatot hozzáadjuk a dokumentumhoz
+            document.add(table);
             
             // hozzáadunk egy darab valamit (aláírást)
             Chunk postScript = new Chunk("\n\n\n A ContactsData alkalmazás által létrehozva");

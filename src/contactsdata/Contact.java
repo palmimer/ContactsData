@@ -5,6 +5,7 @@
  */
 package contactsdata;
 
+import java.sql.Timestamp;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -13,33 +14,46 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class Contact {
     //az ilyen típusú változók tudnak majd kommunikálni az adatbázissal
+    private final SimpleStringProperty id;
     private final SimpleStringProperty lastName;
     private final SimpleStringProperty firstName;
     private final SimpleStringProperty email;
     private final SimpleStringProperty phoneNum;
+    private Timestamp regTime;
     
     //egy üres konstruktor
     public Contact() {
+        this.id = new SimpleStringProperty("");
         this.lastName = new SimpleStringProperty("");
         this.firstName = new SimpleStringProperty("");
         this.email = new SimpleStringProperty("");
         this.phoneNum = new SimpleStringProperty("");
+        this.regTime = null;
     }
-
-    public Contact(String lastName, String firstName, String email, String phoneNum) {
+    //öt string + timestamp paraméteres konstruktor
+    public Contact(String id, String lastName, String firstName, String email, String phoneNum, Timestamp regTime) {
+        this.id = new SimpleStringProperty(id);
         this.lastName = new SimpleStringProperty(lastName);
         this.firstName = new SimpleStringProperty(firstName);
         this.email = new SimpleStringProperty(email);
         this.phoneNum = new SimpleStringProperty(phoneNum);
+        this.regTime = regTime;
     }
 
-    public Contact(String lastName, String firstName, String email) {
+    //négy string (id nélkül) + timestamp paraméteres konstruktor
+    public Contact(String lastName, String firstName, String email, String phoneNum, Timestamp regTime) {
+        this.id = new SimpleStringProperty("");
         this.lastName = new SimpleStringProperty(lastName);
         this.firstName = new SimpleStringProperty(firstName);
         this.email = new SimpleStringProperty(email);
-        this.phoneNum = new SimpleStringProperty("");
+        this.phoneNum = new SimpleStringProperty(phoneNum);
+        this.regTime = regTime;
     }
 
+    public String getId() {
+        return id.get();
+    }
+    
     public String getLastName() {
         return lastName.get();
     }
@@ -56,6 +70,14 @@ public class Contact {
         return phoneNum.get();
     }
     
+    public Timestamp getRegTime() {
+        return regTime;
+    }
+        
+    public void setId(String id){
+        this.id.set(id);
+    }
+    
     public void setLastName(String lastName){
         this.lastName.set(lastName);
     }
@@ -70,5 +92,9 @@ public class Contact {
     
     public void setPhoneNumber(String phoneNum){
         this.phoneNum.set(phoneNum);
+    }
+    
+    public void setRegTime(Timestamp regTime) {
+        this.regTime = regTime;
     }
 }
