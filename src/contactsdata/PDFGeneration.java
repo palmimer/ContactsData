@@ -107,7 +107,7 @@ public class PDFGeneration {
             dex.printStackTrace();
         } catch (FileNotFoundException fex){
             fex.printStackTrace();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         document.close();
